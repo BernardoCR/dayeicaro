@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { QrCodePix as PixQRCode } from "qrcode-pix";
-
 import IconX from "../../../public/icon-x.react.svg";
 import { useCart } from "./CartContext";
-
 import giftList from "./data";
 
 function Loading(): JSX.Element {
@@ -19,10 +17,13 @@ function Loading(): JSX.Element {
 type PaymentInfoProps = {
   pixQRCode: { payload: string; base64Image: string };
   paymentLink: string;
+  message: string;
 };
+
 const PaymentInfo = ({
   pixQRCode,
   paymentLink,
+  message,
 }: PaymentInfoProps): JSX.Element => {
   return (
     <div className="flex max-w-[32rem] flex-col items-center p-10 pt-20 md:max-w-[none] md:flex-row md:space-x-10 md:p-12">
@@ -61,16 +62,24 @@ const PaymentInfo = ({
             }}
           />
           <button
-            className="flex items-center rounded-r-full border-l border-joanGreen-600 pl-[0.75rem] pr-4 text-sm hover:bg-joanGreen-50 active:bg-joanGreen-600 active:text-white"
+            className="flex items-center rounded-r-full border-l border-joanGreen-600 pl-[0.75rem] pr-4 text-sm hover-bg-joanGreen-50 active-bg-joanGreen-600 active-text-white"
             onClick={() => navigator.clipboard.writeText(pixQRCode.payload)}
           >
             Copiar
           </button>
         </div>
+        {message && (
+          <textarea
+            rows="4"
+            value={message} // Display the message from MiniCart
+            readOnly
+            className="mt-4 text-center text-black border border-joanGreen-600 rounded-lg bg-joanGreen-50 p-2"
+          />
+        )}
       </div>
       <div className="space-y-8 text-sm md:w-[24rem]">
         <p className="text-center font-serif text-2xl tracking-tight md:text-3xl">
-          O pagamento pelo Pix é melhor pra gente e não tem taxas :)
+          O pagamento pelo Pix é melhor pra gente, não tem taxas e você ainda pode nos enviar uma mensagem! :)
         </p>
         <div className="flex space-x-6 px-2">
           <div className="flex flex-1 flex-col items-center space-y-2 text-center">
@@ -93,7 +102,7 @@ const PaymentInfo = ({
               href={paymentLink}
               target="_blank"
               rel="noreferrer"
-              className="underline underline-offset-[0.25em] hover:text-joanGreen-550"
+              className="underline underline-offset-[0.25em] hover-text-joanGreen-550"
             >
               clicar aqui e pagar com cartão de crédito pelo Mercado Pago.
             </a>
@@ -105,7 +114,7 @@ const PaymentInfo = ({
           Se não puder pagar pelo Pix, você também pode{" "}
           <a
             href={paymentLink}
-            className="underline underline-offset-[0.25em] hover:text-joanGreen-550"
+            className="underline underline-offset-[0.25em] hover-text-joanGreen-550"
           >
             clicar aqui e pagar com cartão de crédito pelo Mercado Pago.
           </a>
@@ -115,16 +124,15 @@ const PaymentInfo = ({
   );
 };
 
-type PixQRCode = (
-  amount: number
-) => Promise<{ payload: string; base64Image: string }>;
-const getPixQRCode: PixQRCode = async (amount) => {
+type PixQRCode = (amount: number, message: string) => Promise<{ payload: string; base64Image: string }>;
+
+const getPixQRCode: PixQRCode = async (amount, message) => {
   const pixQRCode = PixQRCode({
     version: "01",
     key: "dayufsc@gmail.com",
     name: "Dayane Azevedo Padilha",
     city: "Florianópolis",
-    message: "Presente de casamento",
+    message: message, // Use the message received as an argument
     value: amount,
   });
   const base64Image = await pixQRCode.base64();
@@ -133,14 +141,19 @@ const getPixQRCode: PixQRCode = async (amount) => {
   return { payload, base64Image };
 };
 
+
 const paymentLinkCache: PaymentLinkCache = {};
+
 type PaymentLinkCache = {
   [key: string]: string;
 };
+
 type PaymentModalProps = {
   setPaymentOpen: SetPaymentOpen;
+  message: string;
 };
-function PaymentModal({ setPaymentOpen }: PaymentModalProps): JSX.Element {
+
+function PaymentModal({ setPaymentOpen, message }: PaymentModalProps): JSX.Element {
   const [pixQRCode, setPixQRCode] = useState({ payload: "", base64Image: "" });
   const [paymentLink, setPaymentLink] = useState("");
   const [loading, setLoading] = useState(true);
@@ -149,7 +162,7 @@ function PaymentModal({ setPaymentOpen }: PaymentModalProps): JSX.Element {
 
   useEffect(() => {
     (async () => {
-      const { payload, base64Image } = await getPixQRCode(cartTotalAmount);
+      const { payload, base64Image } = await getPixQRCode(cartTotalAmount, message); // Pass the message to getPixQRCode
       setPixQRCode({ payload, base64Image });
     })();
 
@@ -169,9 +182,7 @@ function PaymentModal({ setPaymentOpen }: PaymentModalProps): JSX.Element {
             items: cart.items.map((item) => {
               return {
                 title: item.name,
-                unit_price:
-                  item.price ||
-                  giftList.find((gift) => gift.name === item.name)?.price,
+                unit_price: item.price || giftList.find((gift) => gift.name === item.name)?.price,
                 quantity: item.quantity,
               };
             }),
@@ -189,7 +200,7 @@ function PaymentModal({ setPaymentOpen }: PaymentModalProps): JSX.Element {
 
       return () => abortController.abort();
     })();
-  }, [cart, cartTotalAmount]);
+  }, [cart, cartTotalAmount, message]); // Add message as a dependency
 
   return (
     <div
@@ -201,16 +212,12 @@ function PaymentModal({ setPaymentOpen }: PaymentModalProps): JSX.Element {
         onClick={(event) => event.stopPropagation()}
       >
         <button
-          className="fixed top-2 right-2 flex items-center justify-center rounded-full bg-white p-2 hover:bg-joanGreen-50 md:absolute"
+          className="fixed top-2 right-2 flex items-center justify-center rounded-full bg-white p-2 hover-bg-joanGreen-50 md:absolute"
           onClick={() => setPaymentOpen(false)}
         >
           <IconX className="h-[28px]" />
         </button>
-        {loading ? (
-          <Loading />
-        ) : (
-          <PaymentInfo pixQRCode={pixQRCode} paymentLink={paymentLink} />
-        )}
+        {loading ? <Loading /> : <PaymentInfo pixQRCode={pixQRCode} paymentLink={paymentLink} message={message} />}
       </div>
     </div>
   );
