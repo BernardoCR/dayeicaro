@@ -70,7 +70,7 @@ const PaymentInfo = ({
         </div>
         {message && (
           <textarea
-            rows="4"
+            rows={4}
             value={message} // Display the message from MiniCart
             readOnly
             className="mt-4 text-center text-black border border-joanGreen-600 rounded-lg bg-joanGreen-50 p-2"
