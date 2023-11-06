@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import logo from "../../../public/chandra-e-joao.svg";
+import logo from "../../../public/day-e-icaro.svg";
 
 type Background = "dark" | "light";
 
