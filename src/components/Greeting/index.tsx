@@ -22,8 +22,8 @@ function Intro(): JSX.Element {
         <div className="relative m-auto mt-12 max-w-[432px]">
           <Image
             src={chandraEJoao}
-            alt="Chandra e João, por Guilherme Garofalo"
-            title="Chandra e João, por Guilherme Garofalo"
+            alt="Day e Ícaro"
+            title="Day e Ícaro"
             sizes="(max-width: 496px) 100vw - 64px, 432px"
             style={{
               width: "100%",
