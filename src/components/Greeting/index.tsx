@@ -1,5 +1,5 @@
 import Image from "next/image";
-import chandraEJoao from "../../../public/chandra-e-joao-na-toca.jpg";
+import chandraEJoao from "../../../public/day-e-icaro.jpg";
 import Signatures from "../../../public/signatures.react.svg";
 
 function Intro(): JSX.Element {
