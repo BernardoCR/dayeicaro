@@ -33,7 +33,7 @@ const Index: NextPage = () => {
         <meta property="og:type" content="website" />
         <meta
           property="og:url"
-          content={`https://www.chandraejoao.com${path}`}
+          content={`https://dayeicaro.vercel.app${path}`}
         />
         <meta
           property="og:image"
