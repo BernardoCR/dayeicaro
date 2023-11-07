@@ -21,7 +21,7 @@ function Question({ question, answer }: QuestionProps): JSX.Element {
 
 function FAQ(): JSX.Element {
   return (
-    <div className="space-y-16 border-t border-joanGreen-600 px-4 py-10 text-joanGreen-600 selection:bg-joanGreen-600 selection:text-white md:p-20">
+    <div className="space-y-16 border-t border-joanGreen-300 px-8 py-10 text-joanGreen-300 selection:bg-joanGreen-300 selection:text-white md:p-10">
       <div className="text-center font-serif text-4xl">
         Baseado no código original de Chandra Drummond (https://github.com/jpesce/joandra-wedding)
       </div>
