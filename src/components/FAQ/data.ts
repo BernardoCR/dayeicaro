@@ -1,8 +1,8 @@
 const questionList: QuestionList = [
   {
-    question: "Adaptado por",
-    answer:
-      "Bernardo.",
+//    question: "Adaptado por",
+//    answer:
+//    "Bernardo.",
   },
 ];
 
