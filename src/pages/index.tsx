@@ -46,7 +46,6 @@ const Index: NextPage = () => {
           <GiftList />
         </section>
       </CartProvider>
-      <Footer />      
     </>
   );
 };
