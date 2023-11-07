@@ -22,8 +22,8 @@ function Question({ question, answer }: QuestionProps): JSX.Element {
 function FAQ(): JSX.Element {
   return (
     <div className="space-y-16 border-t border-joanGreen-600 px-8 py-10 text-joanGreen-600 selection:bg-joanGreen-600 selection:text-white md:p-20">
-      <div className="text-center font-serif text-4xl">
-        Perguntas frequentes
+      <div className="text-center font-serif text-3xl">
+        Baseado no código original de Chandra Drummond (https://github.com/jpesce/joandra-wedding)
       </div>
       <div className="m-auto max-w-[52rem] border-b border-joanGreen-600">
         {questionList.map((question, index) => (
