@@ -46,7 +46,7 @@ const Index: NextPage = () => {
           <GiftList />
         </section>
       </CartProvider>
-      <p>Baseado no código original Chandra Drummond, disponível neste <a href="https://github.com/jpesce/joandra-wedding" target="_blank">link</a></p>
+      <FAQ></FAQ>
     </>
   );
 };
